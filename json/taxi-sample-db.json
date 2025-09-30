@@ -102,8 +102,8 @@
         }
     },
     "settings": {
-        "appName": "Exicube",
-        "code": "USD",
+        "appName": "GRÚAS VIP",
+        "code": "COP",
         "symbol": "$",
         "decimal": 2,
         "driver_approval": false,
@@ -113,7 +113,7 @@
         "panic":991,
         "convert_to_mile":false,
         "CarHornRepeat": true,
-        "CompanyName": "Exicube App Solutions",
+        "CompanyName": "GRÚAS VIP",
         "CompanyWebsite": "https://exicube.com",
         "CompanyTerms": "https://exicubetaxi.web.app/privacy-policy",
         "TwitterHandle": "https://twitter.com/exicube",

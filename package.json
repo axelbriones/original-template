@@ -1,7 +1,7 @@
 {
   "name": "gruasvip",
   "version": "4.7.1",
-  "description": "Exicube App Solutions",
+  "description": "Grúas VIP Disponible 24/7",
   "scripts": {
     "app": "yarn workspace mobile-app start",
     "app:publish": "cd mobile-app && eas update",
@@ -25,7 +25,7 @@
     "functions",
     "common"
   ],
-  "author": "Exicube App Solutions (OPC) Private Limited",
+  "author": "Byron Briones @axelbriones",
   "private": true,
   "dependencies": {
     "concurrently": "7.0.0",

@@ -53,28 +53,40 @@ function AuthLoading(props) {
         }
       }
       if(def1 && def1.langLocale){
-        const result = localStorage.getItem('lang');
-        if (result) {
-          let langLocale = JSON.parse(result)['langLocale'];
-          let dateLocale = JSON.parse(result)['dateLocale'];
+        try {
+          const result = localStorage.getItem('lang');
+          const langSettings = result ? JSON.parse(result) : null;
+
+          if (langSettings && langSettings.langLocale) {
+            i18n.addResourceBundle(
+              langSettings.langLocale,
+              "translations",
+              obj[langSettings.langLocale]
+            );
+            i18n.changeLanguage(langSettings.langLocale);
+            moment.locale(langSettings.dateLocale || 'en-gb');
+          } else {
+            // Usar configuración predeterminada de Firebase
+            i18n.addResourceBundle(
+              def1.langLocale,
+              "translations",
+              obj[def1.langLocale]
+            );
+            i18n.changeLanguage(def1.langLocale);
+            moment.locale(def1.dateLocale);
+          }
+        } catch (error) {
+          console.error('Error al cargar configuración de idioma:', error);
+          // Fallback a configuración predeterminada
           i18n.addResourceBundle(
-            langLocale,
+            'en',
             "translations",
-            obj[langLocale]
+            obj['en']
           );
-          i18n.changeLanguage(langLocale);
-          moment.locale(dateLocale);
-        } else {
-          i18n.addResourceBundle(
-            def1.langLocale,
-            "translations",
-            obj[def1.langLocale]
-          );
-          i18n.changeLanguage(def1.langLocale);
-          moment.locale(def1.dateLocale);
+          i18n.changeLanguage('en');
+          moment.locale('en-gb');
         }
       }
-
       dispatch(fetchUser());
     }
   }, [languagedata, dispatch, fetchUser]);
