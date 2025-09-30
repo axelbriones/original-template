@@ -5,7 +5,6 @@ import { api } from "common";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import moment from "moment/min/moment-with-locales";
-import { initReactI18next } from 'react-i18next';
 
 function AuthLoading(props) {
   const { t } = useTranslation();
@@ -43,66 +42,56 @@ function AuthLoading(props) {
 
   useEffect(() => {
     let obj = {};
-    let def1 = null;
+    let def1 = {};
 
-    if (!languagedata.langlist) {
-        return;
-    }
+    if (languagedata.langlist) {
+      // Build translations object and find default language
+      for (const value of Object.values(languagedata.langlist)) {
+        obj[value.langLocale] = value.keyValuePairs;
+        if (value.default === true) {
+          def1 = value;
+          break;
+        }
+      }
 
-    // First, build the translations object and find default language
-    try {
-        Object.values(languagedata.langlist).forEach(value => {
-            if (value.langLocale && value.keyValuePairs) {
-                obj[value.langLocale] = value.keyValuePairs;
-                if (value.default === true) {
-                    def1 = value;
-                }
+      // Only proceed if we have a default language
+      if (def1 && def1.langLocale) {
+        const result = localStorage.getItem('lang');
+
+        if (result) {
+          try {
+            const parsed = JSON.parse(result);
+            const langLocale = parsed?.langLocale;
+            const dateLocale = parsed?.dateLocale;
+
+            if (langLocale && obj[langLocale]) {
+              i18n.addResourceBundle(langLocale, "translations", obj[langLocale]);
+              i18n.changeLanguage(langLocale);
+              moment.locale(dateLocale || 'en');
+            } else {
+              // Fallback to default language if stored language is invalid
+              i18n.addResourceBundle(def1.langLocale, "translations", obj[def1.langLocale]);
+              i18n.changeLanguage(def1.langLocale);
+              moment.locale(def1.dateLocale);
             }
-        });
-
-        // If no default language was found, use English
-        if (!def1) {
-            def1 = {
-                langLocale: 'en',
-                dateLocale: 'en-gb',
-                keyValuePairs: obj['en'] || {}
-            };
+          } catch (error) {
+            console.error("Error parsing lang from localStorage:", error);
+            // Fallback to default language on parse error
+            i18n.addResourceBundle(def1.langLocale, "translations", obj[def1.langLocale]);
+            i18n.changeLanguage(def1.langLocale);
+            moment.locale(def1.dateLocale);
+          }
+        } else {
+          // No stored language preference, use default
+          i18n.addResourceBundle(def1.langLocale, "translations", obj[def1.langLocale]);
+          i18n.changeLanguage(def1.langLocale);
+          moment.locale(def1.dateLocale);
         }
+      }
 
-        // Try to get stored language preferences
-        const storedLang = localStorage.getItem('lang');
-        const langSettings = storedLang ? JSON.parse(storedLang) : null;
-
-        // Determine which language to use
-        const activeLang = (langSettings && langSettings.langLocale && obj[langSettings.langLocale])
-            ? langSettings
-            : def1;
-
-        // Only add resource bundle if we have valid translations
-        if (activeLang.langLocale && obj[activeLang.langLocale]) {
-            // Use i18n without adding it as a dependency
-            i18n.addResourceBundle(
-                activeLang.langLocale,
-                "translations",
-                obj[activeLang.langLocale],
-                true,
-                true
-            );
-            i18n.changeLanguage(activeLang.langLocale);
-            moment.locale(activeLang.dateLocale || 'en-gb');
-        }
-    } catch (error) {
-        console.error('Language initialization error:', error);
-        // Fallback to English if anything goes wrong
-        if (obj['en']) {
-            i18n.addResourceBundle('en', "translations", obj['en'], true, true);
-            i18n.changeLanguage('en');
-            moment.locale('en-gb');
-        }
+      dispatch(fetchUser());
     }
-
-    dispatch(fetchUser());
-}, [languagedata, dispatch, fetchUser]); // Removed i18n from dependencies
+  }, [languagedata, dispatch, fetchUser]);
 
   useEffect(() => {
     if (settingsdata.settings) {
@@ -194,7 +183,7 @@ function AuthLoading(props) {
     )
   ) : (
     <div>
-      <span>GRÚAS VIP - Servicio 24/7</span>
+      <span>No Database Settings found</span>
   </div>
   );
 }

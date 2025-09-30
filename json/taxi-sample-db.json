@@ -132,7 +132,7 @@
         "emailLogin":true,
         "socialLogin":true,
         "driverRadius": 10,
-        "country": "India",
+        "country": "Colombia",
         "RiderWithDraw": false,
         "swipe_symbol": false,
         "restrictCountry" : "",
