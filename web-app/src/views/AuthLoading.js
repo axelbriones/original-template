@@ -80,6 +80,7 @@ function AuthLoading(props) {
 
         // Only add resource bundle if we have valid translations
         if (activeLang.langLocale && obj[activeLang.langLocale]) {
+            // Use i18n without adding it as a dependency
             i18n.addResourceBundle(
                 activeLang.langLocale,
                 "translations",
@@ -101,7 +102,7 @@ function AuthLoading(props) {
     }
 
     dispatch(fetchUser());
-}, [languagedata, dispatch, fetchUser, i18n]);
+}, [languagedata, dispatch, fetchUser]); // Removed i18n from dependencies
 
   useEffect(() => {
     if (settingsdata.settings) {
