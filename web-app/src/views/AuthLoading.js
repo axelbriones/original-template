@@ -43,53 +43,65 @@ function AuthLoading(props) {
 
   useEffect(() => {
     let obj = {};
-    let def1 = {};
-    if (languagedata.langlist) {
-      for (const value of Object.values(languagedata.langlist)) {
-        obj[value.langLocale] = value.keyValuePairs;
-        if (value.default === true) {
-          def1 = value;
-          break;
-        }
-      }
-      if(def1 && def1.langLocale){
-        try {
-          const result = localStorage.getItem('lang');
-          const langSettings = result ? JSON.parse(result) : null;
+    let def1 = null;
 
-          if (langSettings && langSettings.langLocale) {
-            i18n.addResourceBundle(
-              langSettings.langLocale,
-              "translations",
-              obj[langSettings.langLocale]
-            );
-            i18n.changeLanguage(langSettings.langLocale);
-            moment.locale(langSettings.dateLocale || 'en-gb');
-          } else {
-            // Usar configuración predeterminada de Firebase
-            i18n.addResourceBundle(
-              def1.langLocale,
-              "translations",
-              obj[def1.langLocale]
-            );
-            i18n.changeLanguage(def1.langLocale);
-            moment.locale(def1.dateLocale);
-          }
-        } catch (error) {
-          console.error('Error al cargar configuración de idioma:', error);
-          // Fallback a configuración predeterminada
-          i18n.addResourceBundle(
-            'en',
-            "translations",
-            obj['en']
-          );
-          i18n.changeLanguage('en');
-          moment.locale('en-gb');
-        }
-      }
-      dispatch(fetchUser());
+    if (!languagedata.langlist) {
+        return;
     }
-  }, [languagedata, dispatch, fetchUser]);
+
+    // First, build the translations object and find default language
+    try {
+        Object.values(languagedata.langlist).forEach(value => {
+            if (value.langLocale && value.keyValuePairs) {
+                obj[value.langLocale] = value.keyValuePairs;
+                if (value.default === true) {
+                    def1 = value;
+                }
+            }
+        });
+
+        // If no default language was found, use English
+        if (!def1) {
+            def1 = {
+                langLocale: 'en',
+                dateLocale: 'en-gb',
+                keyValuePairs: obj['en'] || {}
+            };
+        }
+
+        // Try to get stored language preferences
+        const storedLang = localStorage.getItem('lang');
+        const langSettings = storedLang ? JSON.parse(storedLang) : null;
+
+        // Determine which language to use
+        const activeLang = (langSettings && langSettings.langLocale && obj[langSettings.langLocale])
+            ? langSettings
+            : def1;
+
+        // Only add resource bundle if we have valid translations
+        if (activeLang.langLocale && obj[activeLang.langLocale]) {
+            i18n.addResourceBundle(
+                activeLang.langLocale,
+                "translations",
+                obj[activeLang.langLocale],
+                true,
+                true
+            );
+            i18n.changeLanguage(activeLang.langLocale);
+            moment.locale(activeLang.dateLocale || 'en-gb');
+        }
+    } catch (error) {
+        console.error('Language initialization error:', error);
+        // Fallback to English if anything goes wrong
+        if (obj['en']) {
+            i18n.addResourceBundle('en', "translations", obj['en'], true, true);
+            i18n.changeLanguage('en');
+            moment.locale('en-gb');
+        }
+    }
+
+    dispatch(fetchUser());
+}, [languagedata, dispatch, fetchUser, i18n]);
 
   useEffect(() => {
     if (settingsdata.settings) {
