@@ -5,6 +5,7 @@ import { api } from "common";
 import i18n from "i18next";
 import { useTranslation } from "react-i18next";
 import moment from "moment/min/moment-with-locales";
+import { initReactI18next } from 'react-i18next';
 
 function AuthLoading(props) {
   const { t } = useTranslation();
@@ -168,7 +169,7 @@ function AuthLoading(props) {
     )
   ) : (
     <div>
-      <span>No Database Settings found</span>
+      <span>GRÚAS VIP - Servicio 24/7</span>
   </div>
   );
 }

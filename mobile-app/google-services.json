@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "579418037460",
+    "firebase_url": "https://gruas-service-default-rtdb.firebaseio.com",
+    "project_id": "gruas-service",
+    "storage_bucket": "gruas-service.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579418037460:android:7eddf4f917f9354a4d2f41",
+        "android_client_info": {
+          "package_name": "com.piagrua.grua"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "579418037460-c0dnto8cbkv6jblmh2p30h9b23944ar2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiU9_edp664_XHHo3D1OwDI_l_MmRKn1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "579418037460-c0dnto8cbkv6jblmh2p30h9b23944ar2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "579418037460-di92rbnt0n776ni1s55l63r9mjbbf039.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.piagrua.grua"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

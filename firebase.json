@@ -112,13 +112,18 @@
       { "source": "/cartypes/editcartype/**", "destination": "/index.html" },
       {"source": "/users/edituser/**", "destination":"/index.html" },
       { "source": "/users/edituser/**/**", "destination": "/index.html" },
-      { "source": "/*", "destination": "/index.html" }
+      { "source": "/*", "destination": "/index.html" },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   },
   "functions": {
     "runtime": "nodejs22",
     "predeploy": [
       "npm --prefix \"$RESOURCE_DIR\" run lint"
-    ]
+    ],
+    "source": "functions"
   }
 }
