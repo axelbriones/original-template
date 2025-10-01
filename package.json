@@ -30,10 +30,11 @@
   "dependencies": {
     "concurrently": "7.0.0",
     "crypto-js": "^4.1.1",
+    "dotenv": "^17.2.3",
     "exicube-cli": "2.0.0",
     "firebase-tools": "^14.4.0",
     "fs-extra": "10.0.0",
-    "node-fetch": "2.6.7",
+    "node-fetch": "^2.6.7",
     "open": "^8.4.0",
     "xml2json": "^0.12.0"
   },

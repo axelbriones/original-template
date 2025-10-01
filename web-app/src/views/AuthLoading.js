@@ -182,9 +182,23 @@ function AuthLoading(props) {
       props.children
     )
   ) : (
-    <div>
-      <span>No Database Settings found</span>
-  </div>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      width: '100vw',
+      backgroundColor: '#f4f6f9'
+    }}>
+      <img 
+        src="/assets/images/logo165x90white.png"
+        alt="GRÚAS VIP"
+        style={{
+          maxWidth: '165px',
+          height: 'auto'
+        }}
+      />
+    </div>
   );
 }
 
